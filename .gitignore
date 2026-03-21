@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg
+*.egg-info/
+dist/
+build/
+
+# Virtual environments
+venv/
+env/
+.venv/
+.env/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Data files — do NOT commit raw or intermediate datasets
+*.csv
+*.xz
+*.tsv
+*.json
+data/
+
+# Model artifacts (large binary files)
+*.pkl
+*.joblib
+
+# Output plots
+*.png
+*.jpg
+
+# macOS
+.DS_Store
+
+# VS Code / IDEs
+.vscode/
+.idea/
+
+# Logs
+*.log
