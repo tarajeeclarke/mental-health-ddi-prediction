@@ -2,8 +2,6 @@
 
 A machine learning pipeline for detecting adverse drug-drug interaction (DDI) signals in mental-health polypharmacy using the **TwoSIDES** dataset (derived from FDA FAERS). Built as a final project for HADM 283 - AI in Healthcare at Hofstra University.
 
-**Authors:** Desray K. Desir & TaraJee Clarke
-
 ---
 
 ## Project Overview
