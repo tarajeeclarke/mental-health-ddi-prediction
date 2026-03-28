@@ -2,28 +2,20 @@
 __pycache__/
 *.py[cod]
 *.pyo
-*.egg
 *.egg-info/
 dist/
 build/
-
-# Virtual environments
 venv/
-env/
-.venv/
 .env/
+.venv/
 
-# Jupyter
-.ipynb_checkpoints/
+# Large raw TwoSIDES files — do NOT commit these
+TWOSIDES.csv.gz
+TWOSIDES.csv.xz
+twosides.csv
+twosides_chunk_100k.csv
 
-# Data files — do NOT commit raw or intermediate datasets
-*.csv
-*.xz
-*.tsv
-*.json
-data/
-
-# Model artifacts (large binary files)
+# Model artifacts
 *.pkl
 *.joblib
 
@@ -31,12 +23,13 @@ data/
 *.png
 *.jpg
 
-# macOS
+# macOS / IDE
 .DS_Store
-
-# VS Code / IDEs
 .vscode/
 .idea/
 
-# Logs
-*.log
+# Jupyter
+.ipynb_checkpoints/
+
+# Streamlit
+.streamlit/secrets.toml
