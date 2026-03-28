@@ -38,9 +38,16 @@ Where:
 |--------|-------------|
 | **TwoSIDES** | Drug-drug-adverse event associations from FAERS. Each row contains a drug pair, adverse event, contingency counts (A/B/C/D), PRR, and related measures. |
 
-Download from: https://tatonettilab.org/resources/nsides/
+Download from the NSIDES S3 bucket:
+```bash
+curl -L -O "http://tatonettilab-resources.s3-website-us-west-1.amazonaws.com/nsides/TWOSIDES.csv.gz"
+```
+Then decompress:
+```bash
+python -c "import gzip, shutil; shutil.copyfileobj(gzip.open('TWOSIDES.csv.gz', 'rb'), open('twosides.csv', 'wb'))"
+```
 
-> **Note:** Data files are excluded via `.gitignore`. Download TwoSIDES and place it in the project root as `twosides.csv`.
+> **Note:** The original `tatonettilab.org/resources/nsides/` URL is no longer active. The working download is the S3 URL above (~704MB compressed). Data files are excluded via `.gitignore` — only the filtered subset is committed to this repo.
 
 ### Mental-Health Drug Scope
 Rows were filtered to pairs where at least one drug matched a curated list of:
@@ -50,7 +57,7 @@ Rows were filtered to pairs where at least one drug matched a curated list of:
 - Mood stabilizers (lithium, valproate, lamotrigine, etc.)
 - Stimulants (methylphenidate, amphetamine, lisdexamfetamine, etc.)
 
-This yielded ~9,657 rows from a 100,000-row chunk.
+This yielded **19,949 rows** from a 100,000-row chunk, with 57 unique drug_1 values and 59 unique drug_2 values.
 
 ---
 
@@ -58,9 +65,12 @@ This yielded ~9,657 rows from a 100,000-row chunk.
 
 ```
 mental-health-ddi-prediction/
+├── app.py                              # Streamlit app (live demo)
 ├── 01_data_engineering.py              # Chunked loading, Polars filtering, label creation
 ├── 02_modeling.py                      # EDA, model training, evaluation, error analysis
 ├── mental_health_ddi_prediction.ipynb  # Combined end-to-end Jupyter notebook
+├── data/
+│   └── twosides_mental_health_subset.csv  # Pre-filtered real subset (19,949 rows)
 ├── requirements.txt
 ├── .gitignore
 └── README.md
@@ -110,7 +120,7 @@ Train/test split: **80% / 20%**, stratified, `random_state=42`
 
 ### Key Findings
 
-**Why baseline accuracy is misleadingly high:** The dataset is heavily imbalanced — TwoSIDES is signal-enriched, so PRR > 1 dominates. A model that predicts label 1 for nearly every case achieves ~93% accuracy while failing completely on the minority class.
+**Why baseline accuracy is misleadingly high:** The real TwoSIDES subset is heavily imbalanced at **13.8:1** (18,598 signal vs 1,351 no-signal rows). A model that predicts label 1 for nearly every case achieves ~93% accuracy while failing completely on the minority class.
 
 **Why balanced models matter clinically:** In pharmacovigilance, missing a true signal (false negative) can delay investigation of a harmful drug combination. Balanced weighting shifts focus toward detecting the minority class, reducing false negatives at the cost of overall accuracy.
 
@@ -152,7 +162,11 @@ pip install -r requirements.txt
 ```
 
 ### 3. Download TwoSIDES
-Download from https://tatonettilab.org/resources/nsides/ and place as `twosides.csv` in the project root.
+The original `tatonettilab.org` URL is no longer active. Use the S3 bucket directly:
+```bash
+curl -L -O "http://tatonettilab-resources.s3-website-us-west-1.amazonaws.com/nsides/TWOSIDES.csv.gz"
+python -c "import gzip, shutil; shutil.copyfileobj(gzip.open('TWOSIDES.csv.gz', 'rb'), open('twosides.csv', 'wb'))"
+```
 
 ### 4. Run the pipeline
 
@@ -183,7 +197,7 @@ jupyter notebook mental_health_ddi_prediction.ipynb
 
 ## References
 
-- TwoSIDES / NSIDES dataset — Tatonetti Lab: https://tatonettilab.org/resources/nsides/
+- TwoSIDES / NSIDES dataset — Tatonetti Lab: https://nsides.io/ (data via S3: `http://tatonettilab-resources.s3-website-us-west-1.amazonaws.com/nsides/TWOSIDES.csv.gz`)
 - FDA Adverse Event Reporting System (FAERS): https://www.fda.gov/drugs/surveillance/questions-and-answers-fdas-adverse-event-reporting-system-faers
 - scikit-learn documentation: https://scikit-learn.org
 - Polars documentation: https://docs.pola.rs
