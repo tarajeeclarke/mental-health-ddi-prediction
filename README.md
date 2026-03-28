@@ -203,9 +203,3 @@ jupyter notebook mental_health_ddi_prediction.ipynb
 - Polars documentation: https://docs.pola.rs
 
 ---
-
-## Authors
-
-**TaraJee Clarke** & **Desray K. Desir**  
-MS Health Informatics — Hofstra University  
-[LinkedIn](https://www.linkedin.com/in/tarajeeclarke) · [GitHub](https://github.com/tarajeeclarke)
